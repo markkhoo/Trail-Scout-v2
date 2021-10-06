@@ -1,24 +1,22 @@
 import React from 'react';
-import logo from './logo.svg';
+import GoogleMapReact from 'google-map-react'
+import { Icon } from '@iconify/react'
+import locationIcon from '@iconify/icons-mdi/map-marker'
 import './App.css';
 
 function App() {
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+      <div style={{ height: '100vh', width: '100%' }}>
+        <GoogleMapReact
+          bootstrapURLKeys={{ key: '' }}
+          defaultCenter={{ lat: 37.42216, lng: -122.08427 }}
+          defaultZoom={17}
         >
-          Learn React
-        </a>
-      </header>
+
+        </GoogleMapReact>
+      </div>
     </div>
   );
 }
