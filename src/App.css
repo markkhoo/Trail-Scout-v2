@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+
+/* Pin CSS for clarity */
+.pin {
+  display: flex;
+  align-items: center;
+  width: 180px;
+  color: white;
+}
+
+.pin-icon {
+  font-size: 4rem;
+}
+
+.pin-text {
+  font-size: 1.3em;
+}
