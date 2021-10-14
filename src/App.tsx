@@ -3,7 +3,6 @@ import GoogleMapReact from 'google-map-react'
 import { Icon } from '@iconify/react'
 import locationIcon from '@iconify/icons-mdi/map-marker'
 import './App.css';
-import { clear } from 'console';
 
 interface PinPoint {
   lat: number;
@@ -20,24 +19,25 @@ const LocationPin: FC<PinPoint> = ({ text }) => (
 
 function App() {
   const [getCoord, setCoord] = useState<PinPoint>({ lat: 37.42216, lng: -122.08427 });
+  const [getTimer, setTimer] = useState<NodeJS.Timeout>(setTimeout(() => {}, 0))
 
-  //
-  let timer: NodeJS.Timeout;
+  // useEffect(() => {
+  //   console.log(getCoord);
+  // }, [getCoord]);
 
   const searchAfterTime = () => {
+    let timer: NodeJS.Timeout;
     timer = setTimeout(() => {
-      console.log(timer)
+      console.log(getCoord)
     }, 3000);
-    return () => clearTimeout(timer)
+    setTimer(timer);
+    return
   };
 
   const clearSearchAfterTime = () => {
-    clearTimeout(timer)
+    // console.log(typeof getTimer, getTimer);
+    clearTimeout(getTimer)
   }
-
-  useEffect(() => {
-    console.log(getCoord);
-  }, [getCoord]);
 
   return (
     <div className="App">
