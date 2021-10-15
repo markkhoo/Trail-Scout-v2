@@ -19,15 +19,14 @@ const LocationPin: FC<PinPoint> = ({ text }) => (
 
 function App() {
   const [getCoord, setCoord] = useState<PinPoint>({ lat: 37.42216, lng: -122.08427 });
-  const [getTimer, setTimer] = useState<NodeJS.Timeout>(setTimeout(() => {}, 0))
+  const [getTimer, setTimer] = useState<NodeJS.Timeout>(setTimeout(() => { }, 0))
 
   // useEffect(() => {
   //   console.log(getCoord);
   // }, [getCoord]);
 
   const searchAfterTime = () => {
-    let timer: NodeJS.Timeout;
-    timer = setTimeout(() => {
+    let timer: NodeJS.Timeout = setTimeout(() => {
       console.log(getCoord)
     }, 3000);
     setTimer(timer);
