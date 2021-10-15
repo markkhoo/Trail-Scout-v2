@@ -4,10 +4,27 @@ import { Icon } from '@iconify/react'
 import locationIcon from '@iconify/icons-mdi/map-marker'
 import './App.css';
 
-interface PinPoint {
+type PinPoint = {
   lat: number;
   lng: number;
   text?: string;
+}
+
+type TrailData = {
+  city?: string;
+  country?: string;
+  description?: string;
+  directions?: string;
+  features?: string;
+  id: number;
+  lat: string;
+  length?: string;
+  lon: string;
+  name: string;
+  rating?: number;
+  region?: string;
+  thumbnail?: string;
+  url?: string
 }
 
 const LocationPin: FC<PinPoint> = ({ text }) => (
@@ -19,15 +36,33 @@ const LocationPin: FC<PinPoint> = ({ text }) => (
 
 function App() {
   const [getCoord, setCoord] = useState<PinPoint>({ lat: 37.42216, lng: -122.08427 });
-  const [getTimer, setTimer] = useState<NodeJS.Timeout>(setTimeout(() => { }, 0))
+  const [getTimer, setTimer] = useState<NodeJS.Timeout>(setTimeout(() => { }, 0));
+  const [getTrail, setTrail] = useState<TrailData[]>([{ id: 0, lat: '0', lon: '0', name: '' }]);
 
-  // useEffect(() => {
-  //   console.log(getCoord);
-  // }, [getCoord]);
+  useEffect(() => {
+    console.log(getTrail);
+  }, [getTrail]);
+
+  const searchTrails = (
+    lat: number,
+    lng: number
+  ): Promise<TrailData[]> => fetch(`https://trailapi-trailapi.p.rapidapi.com/trails/explore/?lat=${lat}&lon=${lng}&per_page=${50}&radius=${50}`, {
+    "method": "GET",
+    "headers": {
+      "x-rapidapi-host": "trailapi-trailapi.p.rapidapi.com",
+      "x-rapidapi-key": `${''}`
+    }
+  })
+    .then((response) => response.json())
+    .then((res) => res.data as TrailData[])
 
   const searchAfterTime = () => {
     let timer: NodeJS.Timeout = setTimeout(() => {
-      console.log(getCoord)
+
+      searchTrails(getCoord.lat, getCoord.lng).then(res => {
+        setTrail(res)
+      }).catch(err => console.error(err))
+
     }, 3000);
     setTimer(timer);
     return
@@ -42,7 +77,7 @@ function App() {
     <div className="App">
       <div style={{ height: '100vh', width: '100%' }}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: '' }}
+          bootstrapURLKeys={{ key: `${''}` }}
           defaultCenter={{ lat: 37.42216, lng: -122.08427 }}
           defaultZoom={17}
           onDragEnd={(map) => {
@@ -57,16 +92,24 @@ function App() {
           }}
 
         >
+          {getTrail &&
+            getTrail.map(item => {
+              return (
+                <LocationPin
+                  lat={parseFloat(item.lat)}
+                  lng={parseFloat(item.lon)}
+                  text={item.name}
+                />
+              )
+            })
+
+          }
           <LocationPin
             lat={37.42216}
             lng={-122.08427}
-            text={"THIS ROLLING WALTS OF LIFE"}
+            text={"THE CENTER"}
           />
-          <LocationPin
-            lat={37.4}
-            lng={-122.1}
-            text={"TTTTTTTTTTT TTTTTTTTTTTT"}
-          />
+
         </GoogleMapReact>
       </div>
     </div>
