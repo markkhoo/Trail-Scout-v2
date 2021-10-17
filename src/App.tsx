@@ -79,7 +79,7 @@ function App() {
     "method": "GET",
     "headers": {
       "x-rapidapi-host": "trailapi-trailapi.p.rapidapi.com",
-      "x-rapidapi-key": `${'ab399b1f67mshf2552c3222ba6dfp1221c8jsn63f6ccf2572f'}`
+      "x-rapidapi-key": `${''}`
     }
   })
     .then((response) => response.json())
