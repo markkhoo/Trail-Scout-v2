@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
+import service from './utils/localStorageHelper';
 import GoogleMapReact from 'google-map-react'
 import { Icon } from '@iconify/react'
 import locationIcon from '@iconify/icons-mdi/map-marker'
@@ -40,17 +41,45 @@ function App() {
   const [getTrail, setTrail] = useState<TrailData[]>([{ id: 0, lat: '0', lon: '0', name: '' }]);
 
   useEffect(() => {
-    console.log(getTrail);
-  }, [getTrail]);
+    if (!localStorage.getItem("TrailApp_lat") || !localStorage.getItem("TrailApp_lng")) {
+      service.setItem('TrailApp_lat', getCoord.lat);
+      service.setItem('TrailApp_lng', getCoord.lng);
+    };
+
+    const lat: number = service.getItem<number>('TrailApp_lat', 0);
+    const lng: number = service.getItem<number>('TrailApp_lng', 0);
+
+    setCoord({ lat: lat, lng: lng });
+
+    searchTrails(lat, lng).then(res => {
+      if (res) {
+        setTrail(res)
+      }
+    }).catch(err => console.error(err))
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const lat: number = service.getItem<number>('TrailApp_lat', 0);
+    const lng: number = service.getItem<number>('TrailApp_lng', 0);
+
+    if (lat !== null || lng !== null) {
+      console.log(typeof lat, lat);
+      console.log(typeof lng, lng);
+
+    }
+
+  }, [getCoord]);
 
   const searchTrails = (
     lat: number,
     lng: number
-  ): Promise<TrailData[]> => fetch(`https://trailapi-trailapi.p.rapidapi.com/trails/explore/?lat=${lat}&lon=${lng}&per_page=${50}&radius=${50}`, {
+  ): Promise<TrailData[]> => fetch(`https://trailapi-trailapi.p.rapidapi.com/trails/explore/?lat=${lat}&lon=${lng}&per_page=${50}&radius=${100}`, {
     "method": "GET",
     "headers": {
       "x-rapidapi-host": "trailapi-trailapi.p.rapidapi.com",
-      "x-rapidapi-key": `${''}`
+      "x-rapidapi-key": `${'ab399b1f67mshf2552c3222ba6dfp1221c8jsn63f6ccf2572f'}`
     }
   })
     .then((response) => response.json())
@@ -60,7 +89,9 @@ function App() {
     let timer: NodeJS.Timeout = setTimeout(() => {
 
       searchTrails(getCoord.lat, getCoord.lng).then(res => {
-        setTrail(res)
+        if (res) {
+          setTrail(res)
+        }
       }).catch(err => console.error(err))
 
     }, 3000);
@@ -78,19 +109,23 @@ function App() {
       <div style={{ height: '100vh', width: '100%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: `${''}` }}
-          defaultCenter={{ lat: 37.42216, lng: -122.08427 }}
-          defaultZoom={17}
+          defaultCenter={{ lat: getCoord.lat, lng: getCoord.lng }}
+          defaultZoom={service.getItem('TrailApp_zoom', 12)}
           onDragEnd={(map) => {
             setCoord({
               lat: parseFloat(map.center.lat().toFixed(5)),
               lng: parseFloat(map.center.lng().toFixed(5))
             });
+            service.setItem('TrailApp_lat', parseFloat(map.center.lat().toFixed(5)));
+            service.setItem('TrailApp_lng', parseFloat(map.center.lng().toFixed(5)));
 
             clearSearchAfterTime();
             searchAfterTime();
 
           }}
-
+          onZoomAnimationEnd={(map) => {
+            service.setItem('TrailApp_zoom', map)
+          }}
         >
           {getTrail &&
             getTrail.map(item => {
