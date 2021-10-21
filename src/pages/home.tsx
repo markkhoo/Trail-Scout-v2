@@ -86,7 +86,7 @@ function Home() {
         }
     })
         .then((response) => response.json())
-        .then((res) => res.data as TrailData[])
+        .then((res) => res.data as TrailData[]);
 
     const searchAfterTime = () => {
         let timer: NodeJS.Timeout = setTimeout(() => {
@@ -112,8 +112,10 @@ function Home() {
             <div style={{ height: '90vh', width: '90%' }}>
                 <GoogleMapReact
                     bootstrapURLKeys={{ key: `${''}` }}
-                    defaultCenter={{ lat: getCoord.lat, lng: getCoord.lng }}
-                    defaultZoom={service.getItem('TrailApp_zoom', 12)}
+                    defaultCenter={{ lat: 37.42216, lng: -122.08427 }}
+                    center={{ lat: getCoord.lat, lng: getCoord.lng }}
+                    defaultZoom={12}
+                    zoom={service.getItem('TrailApp_zoom', 12)}
                     onDragEnd={(map) => {
                         setCoord({
                             lat: parseFloat(map.center.lat().toFixed(5)),

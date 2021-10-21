@@ -1,13 +1,17 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Home from './pages/home';
+import TrailDetail from './pages/trail';
 import './App.css';
 
 function App() {
   return (
-    <Router>
-      <Route exact path="/" component={Home} />
-    </Router>
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route path="/:trailsID" component={TrailDetail} />
+      </Switch>
+    </BrowserRouter>
   )
 }
 
