@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
+import TrailCard from '../components/trailCard';
 import service from '../utils/localStorageHelper';
 import GoogleMapReact from 'google-map-react';
 import { Icon } from '@iconify/react';
@@ -15,6 +15,7 @@ type TrailData = {
     city?: string;
     country?: string;
     description?: string;
+    difficulty: string;
     directions?: string;
     features?: string;
     id: number;
@@ -22,7 +23,7 @@ type TrailData = {
     length?: string;
     lon: string;
     name: string;
-    rating?: number;
+    rating: number;
     region?: string;
     thumbnail?: string;
     url?: string
@@ -38,7 +39,7 @@ const LocationPin: FC<PinPoint> = ({ text }) => (
 function Home() {
     const [getCoord, setCoord] = useState<PinPoint>({ lat: 37.42216, lng: -122.08427 });
     const [getTimer, setTimer] = useState<NodeJS.Timeout>(setTimeout(() => { }, 0));
-    const [getTrail, setTrail] = useState<TrailData[]>([{ id: 0, lat: '0', lon: '0', name: '' }]);
+    const [getTrail, setTrail] = useState<TrailData[]>([{ id: 1, lat: '0', lon: '0', name: '', difficulty: "", rating: 0 }]);
 
     useEffect(() => {
         if (!localStorage.getItem("TrailApp_lat") || !localStorage.getItem("TrailApp_lng")) {
@@ -107,53 +108,71 @@ function Home() {
         clearTimeout(getTimer)
     }
 
-    return (
-        <div className="App">
-            <div style={{ height: '90vh', width: '90%' }}>
-                <GoogleMapReact
-                    bootstrapURLKeys={{ key: `${''}` }}
-                    defaultCenter={{ lat: 37.42216, lng: -122.08427 }}
-                    center={{ lat: getCoord.lat, lng: getCoord.lng }}
-                    defaultZoom={12}
-                    zoom={service.getItem('TrailApp_zoom', 12)}
-                    onDragEnd={(map) => {
-                        setCoord({
-                            lat: parseFloat(map.center.lat().toFixed(5)),
-                            lng: parseFloat(map.center.lng().toFixed(5))
-                        });
-                        service.setItem('TrailApp_lat', parseFloat(map.center.lat().toFixed(5)));
-                        service.setItem('TrailApp_lng', parseFloat(map.center.lng().toFixed(5)));
+    return (<>
+        <div style={{ height: '90vh', width: '100%' }}>
+            <GoogleMapReact
+                bootstrapURLKeys={{ key: `${''}` }}
+                defaultCenter={{ lat: 37.42216, lng: -122.08427 }}
+                center={{ lat: getCoord.lat, lng: getCoord.lng }}
+                defaultZoom={12}
+                zoom={service.getItem('TrailApp_zoom', 12)}
+                onDragEnd={(map) => {
+                    setCoord({
+                        lat: parseFloat(map.center.lat().toFixed(5)),
+                        lng: parseFloat(map.center.lng().toFixed(5))
+                    });
+                    service.setItem('TrailApp_lat', parseFloat(map.center.lat().toFixed(5)));
+                    service.setItem('TrailApp_lng', parseFloat(map.center.lng().toFixed(5)));
 
-                        clearSearchAfterTime();
-                        searchAfterTime();
+                    clearSearchAfterTime();
+                    searchAfterTime();
 
-                    }}
-                    onZoomAnimationEnd={(map) => {
-                        service.setItem('TrailApp_zoom', map)
-                    }}
-                >
-                    {getTrail &&
-                        getTrail.map(item => {
-                            return (
-                                <LocationPin
-                                    lat={parseFloat(item.lat)}
-                                    lng={parseFloat(item.lon)}
-                                    text={item.name}
-                                />
-                            )
-                        })
+                }}
+                onZoomAnimationEnd={(map) => {
+                    service.setItem('TrailApp_zoom', map)
+                }}
+            >
+                {getTrail &&
+                    getTrail.map(item => {
+                        return (
+                            <LocationPin
+                                lat={parseFloat(item.lat)}
+                                lng={parseFloat(item.lon)}
+                                text={item.name}
+                            />
+                        )
+                    })
 
-                    }
-                    <LocationPin
-                        lat={37.42216}
-                        lng={-122.08427}
-                        text={"THE CENTER"}
-                    />
+                }
+                <LocationPin
+                    lat={37.42216}
+                    lng={-122.08427}
+                    text={"THE CENTER"}
+                />
 
-                </GoogleMapReact>
+            </GoogleMapReact>
+        </div>
+        <div>
+            <div>
+                <p>Results</p>
+            </div>
+            <div className="resultContainer">
+                {getTrail &&
+                    getTrail.map(item => {
+                        return(
+                            <TrailCard 
+                                key={item.id}
+                                id={item.id}
+                                name={item.name}
+                                difficulty={item.difficulty}
+                                rating={item.rating}
+                            />
+                        )
+                    })
+                }
             </div>
         </div>
-    );
+    </>);
 }
 
 export default Home

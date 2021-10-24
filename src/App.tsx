@@ -6,12 +6,14 @@ import './App.css';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route path="/:trailsID" component={TrailDetail} />
-      </Switch>
-    </BrowserRouter>
+    <div className="App">
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/:trailsID" component={TrailDetail} />
+        </Switch>
+      </BrowserRouter>
+    </div>
   )
 }
 
