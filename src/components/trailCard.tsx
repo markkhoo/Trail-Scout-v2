@@ -12,12 +12,12 @@ type CardProps = {
 const TrailCard: FC<CardProps> = ({ id, name, difficulty, rating }) => {
 
 
-    return(
-        <div>
+    return (
+        <div className="trailCard">
             <p>{name}</p>
             <p>{difficulty}</p>
             <p>{rating}</p>
-            <Link to={`/${id}`}>Details</Link>
+            <Link to={`/trail/${id}`}>Details</Link>
         </div>
     )
 }

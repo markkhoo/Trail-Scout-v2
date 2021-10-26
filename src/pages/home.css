@@ -1,0 +1,12 @@
+.resultA {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+}
+
+.resultContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}

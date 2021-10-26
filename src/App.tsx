@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Home from './pages/home';
 import TrailDetail from './pages/trail';
+import PageNotFound from './pages/notFound';
 import './App.css';
 
 function App() {
@@ -10,7 +11,8 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/:trailsID" component={TrailDetail} />
+          <Route path="/trail/:trailsID" component={TrailDetail} />
+          <Route path="/PageNotFound" component={PageNotFound} />
         </Switch>
       </BrowserRouter>
     </div>

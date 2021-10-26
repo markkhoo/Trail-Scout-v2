@@ -4,6 +4,7 @@ import service from '../utils/localStorageHelper';
 import GoogleMapReact from 'google-map-react';
 import { Icon } from '@iconify/react';
 import locationIcon from '@iconify/icons-mdi/map-marker';
+import "./home.css";
 
 type PinPoint = {
     lat: number;
@@ -61,16 +62,16 @@ function Home() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    useEffect(() => {
-        const lat: number = service.getItem<number>('TrailApp_lat', 0);
-        const lng: number = service.getItem<number>('TrailApp_lng', 0);
+    // useEffect(() => {
+    //     const lat: number = service.getItem<number>('TrailApp_lat', 0);
+    //     const lng: number = service.getItem<number>('TrailApp_lng', 0);
 
-        if (lat !== null || lng !== null) {
-            console.log(typeof lat, lat);
-            console.log(typeof lng, lng);
-        }
+    //     if (lat !== null || lng !== null) {
+    //         console.log(typeof lat, lat);
+    //         console.log(typeof lng, lng);
+    //     }
 
-    }, [getCoord]);
+    // }, [getCoord]);
 
     useEffect(() => {
         console.log(getTrail)
@@ -144,15 +145,9 @@ function Home() {
                     })
 
                 }
-                <LocationPin
-                    lat={37.42216}
-                    lng={-122.08427}
-                    text={"THE CENTER"}
-                />
-
             </GoogleMapReact>
         </div>
-        <div>
+        <div className="resultA">
             <div>
                 <p>Results</p>
             </div>
