@@ -3,7 +3,7 @@ import TrailCard from '../components/trailCard';
 import service from '../utils/localStorageHelper';
 import GoogleMapReact from 'google-map-react';
 import { Icon } from '@iconify/react';
-import locationIcon from '@iconify/icons-mdi/map-marker';
+import arrowUpLeft from '@iconify/icons-akar-icons/arrow-up-left';
 import "./home.css";
 
 type PinPoint = {
@@ -32,7 +32,7 @@ type TrailData = {
 
 const LocationPin: FC<PinPoint> = ({ text }) => (
     <div className="pin">
-        <Icon icon={locationIcon} className="pin-icon" />
+        <Icon icon={arrowUpLeft} className="pin-icon" />
         <p className="pin-text">{text}</p>
     </div>
 )
@@ -65,17 +65,15 @@ function Home() {
     // useEffect(() => {
     //     const lat: number = service.getItem<number>('TrailApp_lat', 0);
     //     const lng: number = service.getItem<number>('TrailApp_lng', 0);
-
     //     if (lat !== null || lng !== null) {
     //         console.log(typeof lat, lat);
     //         console.log(typeof lng, lng);
     //     }
-
     // }, [getCoord]);
 
-    useEffect(() => {
-        console.log(getTrail)
-    }, [getTrail]);
+    // useEffect(() => {
+    //     console.log(getTrail)
+    // }, [getTrail]);
 
     const searchTrails = (
         lat: number,
@@ -110,7 +108,7 @@ function Home() {
     }
 
     return (<>
-        <div style={{ height: '90vh', width: '100%' }}>
+        <div className="MapContainer">
             <GoogleMapReact
                 bootstrapURLKeys={{ key: `${''}` }}
                 defaultCenter={{ lat: 37.42216, lng: -122.08427 }}
@@ -147,9 +145,9 @@ function Home() {
                 }
             </GoogleMapReact>
         </div>
-        <div className="resultA">
-            <div>
-                <p>Results</p>
+        <div className="resultParent">
+            <div className="resultHeader">
+                <h2>Results</h2>
             </div>
             <div className="resultContainer">
                 {getTrail &&

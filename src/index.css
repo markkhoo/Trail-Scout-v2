@@ -7,7 +7,28 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+:root {
+  /* Layout Colors */
+  --color_main: hsl(158, 63%, 54%);
+  --color_background: hsl(158, 0%, 17%);
+  --color_low_contrast: hsl(158, 0%, 25%);
+  --color_med_contrast: hsl(158, 0%, 65%);
+  --color_high_contrast: hsl(158, 0%, 95%);
+  /* Denotive Colors */
+  --color_error: hsl(340, 90%, 50%);
+  --color_success: hsl(145, 100%, 50%);
+  --color_disabled: hsl(0, 0%, 50%);
+  /* Interactive Colors */
+  --color_Int_1: hsl(158, 63%, 34%);
+  --color_Int_2: hsl(158, 63%, 44%);
+  --color_Int_3: hsl(158, 63%, 54%);
+  --color_Int_4: hsl(158, 63%, 79%);
+  --color_Int_5: hsl(158, 63%, 84%);
+  /* Font */
+  --font_family_primary: 'Jost', sans-serif;
+  --letter_spacing_standard: 0.25rem;
+  /* Borders */
+  --border_radius: 15px;
+  /* Gradients */
+  --gradient_1: linear-gradient(86deg, rgba(139, 240, 200, 1) 5%, rgba(139, 240, 224, 1) 11%, rgba(112, 194, 213, 1) 18%, rgba(112, 195, 213, 1) 27%, rgba(198, 189, 221, 1) 38%, rgba(164, 148, 191, 1) 48%, rgba(191, 154, 158, 1) 65%, rgba(148, 187, 191, 1) 80%, rgba(68, 172, 108, 1) 100%);
 }
