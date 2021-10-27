@@ -5,18 +5,21 @@
 }
 
 .pin {
-    display: flex;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 25% 75%;
     width: 180px;
     color: white;
 }
 
 .pin-icon {
-    font-size: 4rem;
+    font-size: 3rem;
 }
 
 .pin-text {
     font-size: 1.3em;
+    align-self: center;
+    justify-self: start;
+    text-align: left;
 }
 
 /* Search Results Styles */
@@ -33,10 +36,51 @@
 }
 
 .resultContainer {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+
+    height: 24em;
 
     background-color: var(--color_low_contrast);
+}
+
+.resultPagination {
+    padding: 0.5em;
+    border-radius: 0 0 var(--border_radius) var(--border_radius);
+    background-color: var(--color_low_contrast);
+}
+
+.resultButton {
+    padding: 0.5em;
+    margin: 0 0.25em 0 0.25em;
+
+    font-weight: 700;
+    letter-spacing: 0.125em;
+
+    cursor: pointer;
+
+    border: 0px solid var(--color_background);
+    background-color: var(--color_high_contrast);
+    color: var(--color_background);
+}
+
+.resultButton:hover {
+    background-color: var(--color_Int_5);
+}
+
+.buttonCurrent {
+    background-color: var(--color_Int_3);
+}
+
+.buttonPrev, .buttonNext {
+    padding: 0.5em 1em 0.5em 1em;
+}
+
+.buttonPrev {
+    border-radius: 1.5em 0 0 1.5em;
+}
+
+.buttonNext {
+    border-radius: 0 1.5em 1.5em 0;
 }

@@ -40,8 +40,8 @@ const LocationPin: FC<PinPoint> = ({ text }) => (
 function Home() {
     const [getCoord, setCoord] = useState<PinPoint>({ lat: 37.42216, lng: -122.08427 });
     const [getTimer, setTimer] = useState<NodeJS.Timeout>(setTimeout(() => { }, 0));
-    const [getTrail, setTrail] = useState<TrailData[]>([{ id: 1, lat: '0', lon: '0', name: '', difficulty: "", rating: 0 }]);
-    const [getShown, setShown] = useState<TrailData[]>([{ id: 1, lat: '0', lon: '0', name: '', difficulty: "", rating: 0 }]);
+    const [getTrail, setTrail] = useState<TrailData[]>([{ id: -1, lat: '0', lon: '0', name: '', difficulty: "", rating: 0 }]);
+    const [getShown, setShown] = useState<TrailData[]>([{ id: -1, lat: '0', lon: '0', name: '', difficulty: "", rating: 0 }]);
     const [getPages, setPages] = useState<number[]>([1]);
     const [getPageN, setPageN] = useState<number>(1);
 
@@ -49,6 +49,7 @@ function Home() {
         if (!localStorage.getItem("TrailApp_lat") || !localStorage.getItem("TrailApp_lng")) {
             service.setItem('TrailApp_lat', getCoord.lat);
             service.setItem('TrailApp_lng', getCoord.lng);
+            service.setItem('TrailApp_zoom', 12);
         };
 
         const lat: number = service.getItem<number>('TrailApp_lat', 0);
@@ -68,28 +69,22 @@ function Home() {
     useEffect(() => {
         const maxPages: number = Math.ceil(getTrail.length / 8);
         let pageNumbers: number[] = [];
-
         for (let i = 1; i <= maxPages; i++) {
             pageNumbers.push(i)
         };
-
-        setPages(pageNumbers)
+        setPages(pageNumbers);
+        setPageN(1);
     }, [getTrail]);
 
     useEffect(() => {
-        // console.log(getPages);
-
         const currentPageNumber: number = getPageN;
         let displayTrails: TrailData[] = [];
-
         for (let j = (currentPageNumber - 1) * 8; j < currentPageNumber * 8; j++) {
             if (getTrail[j]) {
                 displayTrails.push(getTrail[j])
             }
         }
-
         setShown(displayTrails);
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [getPages, getPageN]);
 
@@ -143,7 +138,7 @@ function Home() {
                 }
             }).catch(err => console.error(err))
 
-        }, 3000);
+        }, 1750);
         setTimer(timer);
         return
     };
@@ -207,6 +202,7 @@ function Home() {
             </div>
             <div className="resultPagination">
                 <button
+                    className="resultButton buttonPrev"
                     onClick={() => { pagePrev() }}
                 >PREV</button>
                 {getPages &&
@@ -214,12 +210,14 @@ function Home() {
                         return (
                             <button
                                 key={item}
+                                className={`resultButton ${(item === getPageN) ? "buttonCurrent": ""}`}
                                 onClick={() => { goToPage(item) }}
                             >{`${item}`}</button>
                         )
                     })
                 }
                 <button
+                    className="resultButton buttonNext"
                     onClick={() => { pageNext() }}
                 >NEXT</button>
             </div>
