@@ -41,6 +41,9 @@ function Home() {
     const [getCoord, setCoord] = useState<PinPoint>({ lat: 37.42216, lng: -122.08427 });
     const [getTimer, setTimer] = useState<NodeJS.Timeout>(setTimeout(() => { }, 0));
     const [getTrail, setTrail] = useState<TrailData[]>([{ id: 1, lat: '0', lon: '0', name: '', difficulty: "", rating: 0 }]);
+    const [getShown, setShown] = useState<TrailData[]>([{ id: 1, lat: '0', lon: '0', name: '', difficulty: "", rating: 0 }]);
+    const [getPages, setPages] = useState<number[]>([1]);
+    const [getPageN, setPageN] = useState<number>(1);
 
     useEffect(() => {
         if (!localStorage.getItem("TrailApp_lat") || !localStorage.getItem("TrailApp_lng")) {
@@ -62,23 +65,66 @@ function Home() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // useEffect(() => {
-    //     const lat: number = service.getItem<number>('TrailApp_lat', 0);
-    //     const lng: number = service.getItem<number>('TrailApp_lng', 0);
-    //     if (lat !== null || lng !== null) {
-    //         console.log(typeof lat, lat);
-    //         console.log(typeof lng, lng);
-    //     }
-    // }, [getCoord]);
+    useEffect(() => {
+        const maxPages: number = Math.ceil(getTrail.length / 8);
+        let pageNumbers: number[] = [];
 
-    // useEffect(() => {
-    //     console.log(getTrail)
-    // }, [getTrail]);
+        for (let i = 1; i <= maxPages; i++) {
+            pageNumbers.push(i)
+        };
+
+        setPages(pageNumbers)
+    }, [getTrail]);
+
+    useEffect(() => {
+        // console.log(getPages);
+
+        const currentPageNumber: number = getPageN;
+        let displayTrails: TrailData[] = [];
+
+        for (let j = (currentPageNumber - 1) * 8; j < currentPageNumber * 8; j++) {
+            if (getTrail[j]) {
+                displayTrails.push(getTrail[j])
+            }
+        }
+
+        setShown(displayTrails);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [getPages, getPageN]);
+
+    const goToPage = (input: number) => {
+        setPageN(input)
+        return
+    };
+
+    const pagePrev = () => {
+        const currentPageNumber: number = getPageN;
+        if (getPageN > 1) {
+            setPageN(currentPageNumber - 1)
+        };
+        return
+    };
+
+    const pageNext = () => {
+        const maxPage: number = getPages.length;
+        const currentPageNumber: number = getPageN;
+        if (getPageN < maxPage) {
+            setPageN(currentPageNumber + 1)
+        };
+        return
+    };
+
+    const clearSearchAfterTime = () => {
+        // console.log(typeof getTimer, getTimer);
+        clearTimeout(getTimer)
+        return
+    }
 
     const searchTrails = (
         lat: number,
         lng: number
-    ): Promise<TrailData[]> => fetch(`https://trailapi-trailapi.p.rapidapi.com/trails/explore/?lat=${lat}&lon=${lng}&per_page=${50}&radius=${100}`, {
+    ): Promise<TrailData[]> => fetch(`https://trailapi-trailapi.p.rapidapi.com/trails/explore/?lat=${lat}&lon=${lng}&per_page=${64}&radius=${100}`, {
         "method": "GET",
         "headers": {
             "x-rapidapi-host": "trailapi-trailapi.p.rapidapi.com",
@@ -101,11 +147,6 @@ function Home() {
         setTimer(timer);
         return
     };
-
-    const clearSearchAfterTime = () => {
-        // console.log(typeof getTimer, getTimer);
-        clearTimeout(getTimer)
-    }
 
     return (<>
         <div className="MapContainer">
@@ -150,10 +191,10 @@ function Home() {
                 <h2>Results</h2>
             </div>
             <div className="resultContainer">
-                {getTrail &&
-                    getTrail.map(item => {
-                        return(
-                            <TrailCard 
+                {getShown &&
+                    getShown.map(item => {
+                        return (
+                            <TrailCard
                                 key={item.id}
                                 id={item.id}
                                 name={item.name}
@@ -163,6 +204,24 @@ function Home() {
                         )
                     })
                 }
+            </div>
+            <div className="resultPagination">
+                <button
+                    onClick={() => { pagePrev() }}
+                >PREV</button>
+                {getPages &&
+                    getPages.map(item => {
+                        return (
+                            <button
+                                key={item}
+                                onClick={() => { goToPage(item) }}
+                            >{`${item}`}</button>
+                        )
+                    })
+                }
+                <button
+                    onClick={() => { pageNext() }}
+                >NEXT</button>
             </div>
         </div>
     </>);
