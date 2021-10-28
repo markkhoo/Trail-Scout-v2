@@ -9,7 +9,7 @@
     display: grid;
     grid-template-columns: 25% 75%;
     width: 180px;
-    color: white;
+    color: var(--color_error);
 }
 
 .pin-icon {

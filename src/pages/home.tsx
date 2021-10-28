@@ -146,7 +146,7 @@ function Home() {
     return (<>
         <div className="MapContainer">
             <GoogleMapReact
-                bootstrapURLKeys={{ key: `${''}` }}
+                bootstrapURLKeys={{ key: `${'AIzaSyDTHB9JTUl-71YWUybeheSoTwrLN8X82ok'}` }}
                 defaultCenter={{ lat: 37.42216, lng: -122.08427 }}
                 center={{ lat: getCoord.lat, lng: getCoord.lng }}
                 defaultZoom={12}
