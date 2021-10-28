@@ -24,8 +24,13 @@ function App() {
       </div>
     </div>
     <footer>
-      <div className="header_footer_container">
-        <p>Footer</p>
+      <div className="header_footer_container footer">
+        <a
+          href="https://github.com/markkhoo/Trail-Scout-v2"
+          target="_blank"
+          rel="noreferrer noopener"
+        >GitHub</a>
+        <p>Made with <a href="https://reactjs.org/" target="_blank" rel="noreferrer noopener">React</a></p>
       </div>
     </footer>
   </>)

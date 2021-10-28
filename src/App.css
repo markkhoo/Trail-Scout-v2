@@ -1,5 +1,4 @@
-h1, h2, h3, h4,
-p {
+h1, h2, h3, h4, p {
   margin: 0;
 }
 
@@ -7,15 +6,14 @@ p {
   display: grid;
   height: 100vh;
   grid-template-rows: auto 1fr auto;
-
   background-color: var(--color_background);
 }
 
 /* Header/Footer Styles */
+
 header, footer {
   display: flex;
   justify-content: center;
-
   background-color: var(--color_main);
 }
 
@@ -28,17 +26,31 @@ header {
   max-width: 1280px;
 }
 
+.footer {
+  display: flex;
+  justify-content: space-between;
+  color: var(--color_low_contrast);
+}
+
+.footer a {
+  color: var(--color_low_contrast);
+  text-decoration: none;
+}
+
+.footer a:hover {
+  color: var(--color_Int_1);
+}
+
 /* Main Context Styles */
+
 .App {
   display: flex;
   justify-content: center;
-
   background-color: var(--color_background);
 }
 
 .Main {
   width: 100%;
   max-width: 1280px;
-
   text-align: center;
 }
