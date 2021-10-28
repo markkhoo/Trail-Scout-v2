@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/Trail-Scout-v2/static/css/main.952315b0.chunk.css",
+    "main.js": "/Trail-Scout-v2/static/js/main.3ab3e330.chunk.js",
+    "main.js.map": "/Trail-Scout-v2/static/js/main.3ab3e330.chunk.js.map",
+    "runtime-main.js": "/Trail-Scout-v2/static/js/runtime-main.89c55d7e.js",
+    "runtime-main.js.map": "/Trail-Scout-v2/static/js/runtime-main.89c55d7e.js.map",
+    "static/js/2.847aa252.chunk.js": "/Trail-Scout-v2/static/js/2.847aa252.chunk.js",
+    "static/js/2.847aa252.chunk.js.map": "/Trail-Scout-v2/static/js/2.847aa252.chunk.js.map",
+    "static/js/3.1b26eaf0.chunk.js": "/Trail-Scout-v2/static/js/3.1b26eaf0.chunk.js",
+    "static/js/3.1b26eaf0.chunk.js.map": "/Trail-Scout-v2/static/js/3.1b26eaf0.chunk.js.map",
+    "index.html": "/Trail-Scout-v2/index.html",
+    "static/css/main.952315b0.chunk.css.map": "/Trail-Scout-v2/static/css/main.952315b0.chunk.css.map",
+    "static/js/2.847aa252.chunk.js.LICENSE.txt": "/Trail-Scout-v2/static/js/2.847aa252.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.89c55d7e.js",
+    "static/js/2.847aa252.chunk.js",
+    "static/css/main.952315b0.chunk.css",
+    "static/js/main.3ab3e330.chunk.js"
+  ]
+}
