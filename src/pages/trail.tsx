@@ -137,13 +137,13 @@ function TrailDetail() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    useEffect(() => {
-        console.log(getTrail)
-    }, [getTrail])
+    // useEffect(() => {
+    //     console.log(getTrail)
+    // }, [getTrail])
 
-    useEffect(() => {
-        console.log(getWeather)
-    }, [getWeather])
+    // useEffect(() => {
+    //     console.log(getWeather)
+    // }, [getWeather])
 
     const searchTrailByID = (trailID: string): Promise<SingleTrail> => fetch(`https://trailapi-trailapi.p.rapidapi.com/trails/${trailID}`, {
         "method": "GET",
