@@ -138,7 +138,7 @@ function Home() {
                 }
             }).catch(err => console.error(err))
 
-        }, 1750);
+        }, 2250);
         setTimer(timer);
         return
     };

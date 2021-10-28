@@ -168,6 +168,20 @@ function TrailDetail() {
         }
     }
 
+    const timeConverter = (UNIX_timestamp: number) => {
+        const a = new Date(UNIX_timestamp * 1000);
+        // const year = a.getFullYear();
+        // const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        // const month = months[a.getMonth()];
+        const date = a.getDate();
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'];
+        const day = days[a.getDay()];
+        // const hour = a.getHours();
+        // const min = a.getMinutes();
+        // const sec = a.getSeconds();
+        return `${day} ${date}`;
+    }
+
     return (<>
         <div className="MapContainer">
             <GoogleMapReact
@@ -224,7 +238,30 @@ function TrailDetail() {
                 </div>
                 : <></>}
         </div>
-        <div style={{padding: "0.5em 0 1.5em 0"}}>
+        <div className="resultParent bottom-container">
+            <div className="resultHeader">
+                <h2>Weather Forecast</h2>
+            </div>
+            <div className="resultContainer">
+                {(getWeather.daily.length > 0) ? getWeather.daily.map(item => {
+                    return (
+                        <div className="weather-card">
+                            <p
+                                style={{ fontSize: "1.25em" }}
+                            ><strong>{timeConverter(item.dt)}</strong></p>
+                            <img
+                                src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
+                                alt={item.weather[0].description}
+                                height="100px"
+                                width="100px"
+                            />
+                            <p><strong>{Math.ceil(item.temp.max)}°F</strong> <span>{Math.floor(item.temp.min)}°F</span></p>
+                        </div>
+                    )
+                }) : <></>}
+            </div>
+        </div>
+        <div style={{ padding: "0.5em 0 1.5em 0" }}>
             <Link className="resultButton button-tweaks" to="/">Go Back Home</Link>
         </div>
     </>)
