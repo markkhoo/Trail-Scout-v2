@@ -1,5 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import GoogleMapReact from 'google-map-react';
+import { Icon } from '@iconify/react';
+import arrowUpLeft from '@iconify/icons-akar-icons/arrow-up-left';
+import "./trail.css";
 
 type TrailID = {
     trailsID: string
@@ -10,6 +14,7 @@ type SingleTrail = {
     country?: string;
     description?: string;
     difficulty?: string;
+    directions?: string;
     features?: string;
     id?: number;
     lat: string | undefined;
@@ -52,7 +57,7 @@ type DailyWeather = {
         eve: number;
         max: number;
         min: number;
-        morn: number; 
+        morn: number;
         night: number;
     };
     uvi: number;
@@ -70,25 +75,39 @@ type Weather = {
     timezone_offset: number
 }
 
+type PinPoint = {
+    lat: number;
+    lng: number;
+    text?: string;
+}
+
+const LocationPin: FC<PinPoint> = ({ text }) => (
+    <div className="pin">
+        <Icon icon={arrowUpLeft} className="pin-icon" />
+        <p className="pin-text">{text}</p>
+    </div>
+)
+
 function TrailDetail() {
     const trailParam: TrailID = useParams()
     const trailID: string = trailParam.trailsID;
 
     const [getTrail, setTrail] = useState<SingleTrail>({
-        city: "test",
+        city: undefined,
         country: "test",
-        description: "test",
-        difficulty: "test",
-        features: "test",
+        description: "",
+        difficulty: undefined,
+        directions: undefined,
+        features: undefined,
         id: 0,
-        lat: "test",
+        lat: "0",
         length: "test",
-        lon: "test",
-        name: "test",
+        lon: "0",
+        name: "",
         rating: 0,
-        region: "test",
-        thumbnail: "test",
-        url: "test"
+        region: undefined,
+        thumbnail: undefined,
+        url: undefined
     });
     const [getWeather, setWeather] = useState<Weather>({
         daily: [],
@@ -140,10 +159,74 @@ function TrailDetail() {
         .then((response) => response.json())
         .then(res => res as Weather);
 
+    const stringReplaceBrake = (x: string | undefined) => {
+        if (x === undefined) {
+            return
+        } else {
+            let output: string = x as string;
+            return output.replace(/<br \/>/g, "").replace(/ {2}/g, " ");
+        }
+    }
+
     return (<>
-        <p>Hello World</p>
-        <p>{`Trail ID: ${trailID}`}</p>
-        <Link to="/">Go Back Home</Link>
+        <div className="MapContainer">
+            <GoogleMapReact
+                bootstrapURLKeys={{ key: `${''}` }}
+                defaultCenter={{ lat: 37.42216, lng: -122.08427 }}
+                center={{ lat: parseFloat(getTrail.lat as string), lng: parseFloat(getTrail.lon as string) }}
+                defaultZoom={12}
+            >
+                <LocationPin
+                    lat={parseFloat(getTrail.lat as string)}
+                    lng={parseFloat(getTrail.lon as string)}
+                    text={getTrail.name}
+                />
+            </GoogleMapReact>
+        </div>
+        <div className="resultParent bottom-container">
+            <div className="resultHeader">
+                <h2>{getTrail.name}</h2>
+            </div>
+            <div className="resultInformation font-white">
+                <div style={{ padding: "0.75em" }}>
+                    {(getTrail.thumbnail) ? <img
+                        src={getTrail.thumbnail}
+                        alt={`Thumbnail for ${getTrail.name}`}
+                        width="100%"
+                        height="auto"
+                    /> : <></>}
+                    {getTrail.city ? <p className="infolet"><strong>Nearest City: </strong>{getTrail.city}</p> : <></>}
+                    {getTrail.region ? <p className="infolet"><strong>Region: </strong>{getTrail.region}</p> : <></>}
+                    {getTrail.difficulty ? <p className="infolet"><strong>Difficulty: </strong>{getTrail.difficulty}</p> : <></>}
+                </div>
+                <div style={{ display: "inline-block" }}>
+                    <h3 className="margin-2">Description</h3>
+                    <p className="margin-1">{stringReplaceBrake(getTrail.description)}</p>
+                    {(getTrail.directions) ? <>
+                        <h3 className="margin-2">Where is the trail head?</h3>
+                        <p className="margin-1">{stringReplaceBrake(getTrail.directions)}</p>
+                    </> : <></>}
+                    {(getTrail.features) ? <>
+                        <h3 className="margin-2">Features</h3>
+                        <p className="margin-1">{stringReplaceBrake(getTrail.features)}</p>
+                    </> : <></>}
+                </div>
+
+            </div>
+            {getTrail.url ?
+                <div style={{ textAlign: "center" }}>
+                    <a
+                        href={getTrail.url}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="resultButton button-tweaks"
+                    >More Information</a>
+                </div>
+                : <></>}
+        </div>
+        <div style={{padding: "0.5em 0 1.5em 0"}}>
+            <Link className="resultButton button-tweaks" to="/">Go Back Home</Link>
+        </div>
     </>)
 }
 
