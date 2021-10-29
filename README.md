@@ -6,7 +6,7 @@ Trail Scout is an interactive application that allows users to find trails to bi
 ## How to Use
 Navigate through the Google Map to search for trails. Trails will populate below and can be clicked for more details.
 
-![Trail-Scout-Screenshot](./READMEimage.png)
+![Trail-Scout-Screenshot](./READMEimage.PNG)
 
 ## Code Snippet
 This section of code populates a state of information to be displayed at the bottom of the main page.
